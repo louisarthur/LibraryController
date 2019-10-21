@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { FaBook, FaSpinner, FaPlus, FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 import Container from '../../components/container/index';
 import { Form, SubmitButton, List, Span } from './styles';
 import StringCompare from 'string-similarity';
@@ -34,10 +33,16 @@ export default class Main extends Component {
     });
   };
   handleChangeRead = book => {
-    if (book.read) {
-      this.setState({ books: this.state.books.book.read });
-    }
+    let books = this.state.books;
+    let index = this.state.books.findIndex(t => t === book);
+
+    books[index] = {
+      ...books[index],
+      read: book.read ? false : true,
+    };
+    this.setState({ books: books });
   };
+
   handleStateChangeTitle = async q => {
     // this.state.books.map(book => {
     //   const ola = StringCompare.compareTwoStrings(q.target.value, book.title);
@@ -93,10 +98,8 @@ export default class Main extends Component {
           <FaBook /> Books
         </h1>
         <h1>
-          <Link to="/search/">
-            <FaSearch />
-            Pesquisar
-          </Link>
+          <FaSearch />
+          Pesquisar
         </h1>
 
         <Form onSubmit={this.handleSubmitState}>
